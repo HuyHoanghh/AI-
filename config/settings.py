@@ -1,0 +1,13 @@
+RANDOM_STATE = 42
+TEST_SIZE = 0.20
+MAX_FEATURES = 5000
+
+LABEL_COLUMN = "label"
+SUBJECT_COLUMN = "subject"
+MESSAGE_COLUMN = "message"
+TEXT_COLUMN = "email_text"
+
+HAM_LABEL = 0
+SPAM_LABEL = 1
+
+KNN_K_VALUES = [3, 5, 7, 9, 11, 15, 21]
