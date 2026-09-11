@@ -1,23 +1,23 @@
-# Experiment Rules
+# Experiment Contract
 
-Shared settings:
-- random_state = 42
-- test_size = 0.20
-- stratify = label
-- max_features = 5000
-- labels: ham=0, spam=1
+## Dataset
+- `train.csv`: huấn luyện, tuning, cross-validation.
+- `test.csv`: chỉ đánh giá cuối; không dùng tuning.
+- `message`: input text.
+- `label`: 0 = hợp lệ, 1 = spam/lừa đảo.
 
-Required comparisons:
-1. Naive Bayes + CountVectorizer
-2. Naive Bayes + TF-IDF
-3. KNN + CountVectorizer
-4. KNN + TF-IDF
+## Feature extraction
+- CountVectorizer: `max_features=5000`
+- TF-IDF: `max_features=5000`
+- Fit vectorizer trên train, chỉ transform test.
 
-Required metrics:
-- Accuracy
-- Precision
-- Recall
-- F1-score
-- Confusion Matrix
-- Training time
-- Prediction time
+## Models
+- Multinomial Naive Bayes.
+- KNN với k thuộc `[3,5,7,9,11,15,21]`.
+- K của KNN được chọn bằng validation tách từ `train.csv`, không nhìn `test.csv`.
+
+## Metrics
+Accuracy, Precision, Recall, F1, Confusion Matrix, train time, prediction time.
+
+## Fair comparison
+Không tự thay MAX_FEATURES, preprocessing, label mapping hoặc test set trên feature branch.

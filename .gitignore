@@ -1,38 +1,25 @@
-# Python
 __pycache__/
 *.py[cod]
-*.pyd
-
-# Virtual environments
 .venv/
 venv/
-env/
-
-# IDE
+.env
 .vscode/
 .idea/
-
-# Jupyter
 .ipynb_checkpoints/
+.DS_Store
+Thumbs.db
 
-# Datasets (keep folders only)
-data/raw/*
+# Raw/processed data are local only
+data/raw/*.csv
 data/processed/*
 !data/raw/.gitkeep
 !data/processed/.gitkeep
 
-# Saved models
+# Trained artifacts
 saved_models/*.pkl
 saved_models/*.joblib
 
 # Generated results
-results/**/*.csv
 results/**/*.png
+results/**/*.csv
 !results/**/.gitkeep
-
-# OS
-.DS_Store
-Thumbs.db
-
-# Logs
-*.log

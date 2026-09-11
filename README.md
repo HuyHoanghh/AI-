@@ -1,89 +1,83 @@
-# Enron Spam Detection
+# Vietnamese SMS Spam Detection
 
-Machine-learning project for classifying Enron emails as **Spam** or **Ham** using two independent pipelines that can be developed in parallel and merged safely on GitHub.
+Đề tài phân loại tin nhắn tiếng Việt thành **Hợp lệ (0)** và **Spam/Lừa đảo (1)** bằng Machine Learning cơ bản.
 
-## Models
+## Dataset chính
+Nguồn chính thức: https://github.com/trannguyenthaituan251209/vietnamese_sms_dataset
 
-- Member 1: Multinomial Naive Bayes
-- Member 2: K-Nearest Neighbors (KNN)
+- `train.csv`: 2.394 mẫu, dùng huấn luyện/Cross-Validation.
+- `test.csv`: 597 mẫu, chỉ dùng đánh giá cuối.
+- Cột dùng chung: `message`, `label`.
+- Không tự chia lại train/test trong thí nghiệm chính.
 
-Both pipelines must use the same shared preprocessing, feature settings, train/test split, and metrics.
+Đặt dữ liệu tại:
 
-## Git workflow
+```text
+data/raw/train.csv
+data/raw/test.csv
+```
 
-Recommended branches:
+## Hai pipeline chạy song song
 
-- `main`: stable release only
-- `develop`: integration branch
-- `feature/naive-bayes`: Member 1
-- `feature/knn`: Member 2
+- `feature/naive-bayes`: Multinomial Naive Bayes
+- `feature/knn`: K-Nearest Neighbors
 
-Merge flow:
+Cả hai dùng chung `config/` và `common/` để đảm bảo cùng preprocessing, vectorizer và metrics.
 
-`feature/* -> develop -> main`
+## 4 cấu hình chính
 
-## Dataset
+1. Naive Bayes + CountVectorizer
+2. Naive Bayes + TF-IDF
+3. KNN + CountVectorizer
+4. KNN + TF-IDF
 
-Use the Enron spam dataset chosen by the team. Do **not** commit the raw dataset to Git.
+Metrics: Accuracy, Precision, Recall, F1-score, Confusion Matrix, thời gian train và predict.
 
-Place the local dataset at:
+## Tham khảo code
+Repo tham khảo: https://github.com/Cham0703/DU_AN_SPAM
 
-`data/raw/enron_spam.csv`
+Các ý tưởng được tham khảo và viết lại cho project này gồm: xử lý giá trị rỗng, EDA độ dài tin nhắn, tần suất từ/WordCloud, quy tắc `fit` trên train và `transform` trên test, lưu model/vectorizer. Project **không sao chép pipeline tiếng Anh** của repo tham khảo: với SMS tiếng Việt, các token ẩn danh như `[PHONE]`, `[MONEY]`, `[DATE]`, `[TIME]` được giữ lại thay vì xóa số/ký tự một cách máy móc.
 
-Expected core columns:
+## Cấu trúc
 
-- `subject`
-- `message`
-- `label`
+```text
+AI-/
+├── config/
+├── common/
+├── data/raw/
+├── models/naive_bayes/
+├── models/knn/
+├── scripts/
+├── results/
+├── saved_models/
+├── app/
+├── tests/
+└── docs/
+```
 
-## Setup
+## Cài đặt
 
 ```bash
 python -m venv .venv
 # Windows
-.venv\\Scripts\\activate
-# macOS/Linux
-source .venv/bin/activate
-
+.venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
-## Shared configuration
-
-See `config/settings.py` and `docs/experiment_rules.md`.
-
-## Ownership
-
-### Member 1
-
-- `models/naive_bayes/`
-- `notebooks/member1/`
-- `results/naive_bayes/`
-- `scripts/run_nb.py`
-
-### Member 2
-
-- `models/knn/`
-- `notebooks/member2/`
-- `results/knn/`
-- `scripts/run_knn.py`
-
-### Shared / protected by agreement
-
-- `common/`
-- `config/`
-- `README.md`
-- `scripts/compare_models.py`
-- `app/`
-
-## Final comparison
-
-After both model result CSV files exist:
+## Chạy
 
 ```bash
+python scripts/run_nb.py
+python scripts/run_knn.py
 python scripts/compare_models.py
 ```
 
-The merged result will be written to:
+## Git workflow
 
-`results/final/final_comparison.csv`
+```text
+feature/naive-bayes ─┐
+                     ├─> develop ─> main
+feature/knn ─────────┘
+```
+
+Không sửa trực tiếp `common/` và `config/` trên feature branch nếu chưa thống nhất với nhóm trưởng.
