@@ -5,12 +5,18 @@
 ## Dataset chính
 Nguồn chính thức: https://github.com/trannguyenthaituan251209/vietnamese_sms_dataset
 
-- `train.csv`: 2.394 mẫu, dùng huấn luyện/Cross-Validation.
-- `test.csv`: 597 mẫu, chỉ dùng đánh giá cuối.
+- `train.csv`: 2.394 mẫu, dùng huấn luyện/tuning/Cross-Validation.
+- `test.csv`: 597 mẫu, **chỉ dùng đánh giá cuối**.
 - Cột dùng chung: `message`, `label`.
 - Không tự chia lại train/test trong thí nghiệm chính.
 
-Đặt dữ liệu tại:
+Tải tự động dataset chính thức:
+
+```bash
+python scripts/download_dataset.py
+```
+
+Hoặc tải thủ công và đặt tại:
 
 ```text
 data/raw/train.csv
@@ -23,6 +29,8 @@ data/raw/test.csv
 - `feature/knn`: K-Nearest Neighbors
 
 Cả hai dùng chung `config/` và `common/` để đảm bảo cùng preprocessing, vectorizer và metrics.
+
+Checklist chung: `docs/TEAM_CHECKLIST.md`.
 
 ## 4 cấu hình chính
 
@@ -62,6 +70,7 @@ python -m venv .venv
 # Windows
 .venv\Scripts\activate
 pip install -r requirements.txt
+python scripts/download_dataset.py
 ```
 
 ## Chạy
@@ -80,4 +89,10 @@ feature/naive-bayes ─┐
 feature/knn ─────────┘
 ```
 
-Không sửa trực tiếp `common/` và `config/` trên feature branch nếu chưa thống nhất với nhóm trưởng.
+Quy tắc:
+
+- Không push trực tiếp vào `main`.
+- Không sửa trực tiếp `common/` và `config/` trên feature branch nếu chưa thống nhất.
+- Người 1 chỉ tập trung Naive Bayes; Người 2 chỉ tập trung KNN.
+- Mỗi người hoàn thành branch -> tạo Pull Request vào `develop`.
+- Chỉ merge `develop -> main` sau khi chạy integration test thành công.
