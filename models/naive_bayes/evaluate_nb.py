@@ -1,6 +1,6 @@
-from common.metrics import evaluate_binary
+from common.metrics import classification_metrics
 
 
 def evaluate_nb(model, X_test, y_test):
     preds = model.predict(X_test)
-    return evaluate_binary(y_test, preds), preds
+    return classification_metrics(y_test, preds), preds
