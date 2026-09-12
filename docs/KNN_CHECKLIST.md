@@ -21,7 +21,7 @@ và tuning K trên `train.csv`.
 ### B. Kiểm tra dữ liệu
 - [x] In số dòng train/test.
 - [x] Kiểm tra `message`, `label`.
-- [x] Kiểm tra missing/duplicate.
+- [x] Kiểm tra missing/duplicate (có 303 duplicate train, 31 duplicate test theo `message,label` — giữ nguyên dữ liệu gốc, không tự xóa/chia lại; ghi rõ trong báo cáo).
 - [x] Thống kê Ham/Spam.
 - [x] Đối chiếu thống kê với Người 1.
 
@@ -41,6 +41,7 @@ và tuning K trên `train.csv`.
 - [x] Thử `K = 3, 5, 7, 9, 11, 15, 21`.
 - [x] Tuning chỉ trên `train.csv`.
 - [x] Không nhìn `test.csv` để chọn K.
+- [x] Chống rò rỉ trong CV: vectorizer + KNN trong `sklearn.pipeline.Pipeline`, mỗi fold tự fit vectorizer trên văn bản.
 - [x] Tính F1 cho từng K.
 - [x] Lưu bảng K -> F1.
 - [x] Chọn best K riêng cho Count và TF-IDF.
@@ -70,6 +71,7 @@ và tuning K trên `train.csv`.
 - [x] Confusion matrix TF-IDF.
 - [x] Notebook giải thích thí nghiệm.
 - [x] Nội dung báo cáo phần KNN.
+- [x] CSV + PNG trong `results/knn/` được đưa lên GitHub (`.gitignore` có ngoại lệ cho `results/knn/`).
 
 ## Điều kiện hoàn thành
 - `python scripts/run_knn.py` chạy không lỗi.

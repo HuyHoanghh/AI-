@@ -23,3 +23,7 @@ saved_models/*.joblib
 results/**/*.png
 results/**/*.csv
 !results/**/.gitkeep
+
+# KNN outputs are required deliverables — keep them on GitHub
+!results/knn/*.csv
+!results/knn/*.png

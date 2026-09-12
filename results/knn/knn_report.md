@@ -16,7 +16,15 @@ Toàn bộ preprocessing và vectorization dùng chung code trong `common/` và
 - `data/raw/train.csv`: 2394 mẫu (dùng để tuning + huấn luyện cuối).
 - `data/raw/test.csv`: 597 mẫu (chỉ dùng **một lần duy nhất** để đánh giá).
 - Cột: `message` (nội dung), `label` (0 = Ham, 1 = Spam).
-- Không có missing/duplicate sau khi kiểm tra bằng `common.data_loader`.
+- Không có missing; **có duplicate** theo cặp `(message, label)`:
+  **303 dòng trùng ở train** và **31 dòng trùng ở test**
+  (đo bằng `common.data_loader.dataset_summary`).
+- Cách xử lý: **giữ nguyên toàn bộ dữ liệu gốc** — không xóa duplicate,
+  không chia lại train/test. Dataset chính thức là tài sản chung của nhóm
+  (mọi thành viên dùng chung một bản), việc thay đổi phải thống nhất với
+  cả nhóm theo `docs/TEAM_CHECKLIST.md`. Lưu ý: duplicate làm các mẫu lặp
+  xuất hiện ở cả train và test nên KNN có xu hướng "nhớ" mẫu đã gặp —
+  đây là đặc điểm của dataset, ảnh hưởng như nhau đến mọi model khi so sánh.
 
 ## 3. Preprocessing (dùng chung `common.preprocessing.clean_series`)
 
@@ -45,19 +53,28 @@ Shape ma trận thu được: `X_train = (2394, 4346)`, `X_test = (597, 4346)`.
 - K được chọn bằng **Stratified 5-Fold Cross-Validation chỉ trên `train.csv`**
   với K ∈ {3, 5, 7, 9, 11, 15, 21}. Tiêu chí chọn: **F1 trung bình** cao nhất
   (lớp Spam là lớp dương), hòa thì chọn K nhỏ hơn.
+- **Chống rò rỉ dữ liệu trong CV:** vectorizer + KNN được gói trong
+  `sklearn.pipeline.Pipeline` và cross-validation chạy **trên văn bản đã
+  preprocessing** — mỗi fold tự fit vectorizer (từ vựng / trọng số IDF) chỉ
+  trên phần train của fold đó, không fold nào "nhìn thấy" phần validation
+  của mình trong bước vectorization.
 - `test.csv` **không hề được nhìn đến** trong bước tuning.
 
-### Bảng tuning K (CV F1 trên train.csv)
+### Bảng tuning K (CV F1 trên train.csv, pipeline chống rò rỉ)
 
 | K | Count F1 (±std) | Count Acc | TF-IDF F1 (±std) | TF-IDF Acc |
 |---|---|---|---|---|
-| **3**  | **0.9128 ± 0.0226** | 0.9557 | **0.8992 ± 0.0113** | 0.9490 |
-| 5  | 0.9031 ± 0.0199 | 0.9511 | 0.8770 ± 0.0148 | 0.9394 |
-| 7  | 0.8896 ± 0.0238 | 0.9449 | 0.8473 ± 0.0281 | 0.9261 |
-| 9  | 0.8757 ± 0.0307 | 0.9390 | 0.8332 ± 0.0278 | 0.9202 |
-| 11 | 0.8650 ± 0.0333 | 0.9344 | 0.8299 ± 0.0274 | 0.9190 |
-| 15 | 0.8343 ± 0.0333 | 0.9215 | 0.8100 ± 0.0398 | 0.9114 |
-| 21 | 0.8154 ± 0.0453 | 0.9148 | 0.7761 ± 0.0338 | 0.8985 |
+| **3**  | **0.9128 ± 0.0226** | 0.9557 | **0.9000 ± 0.0127** | 0.9495 |
+| 5  | 0.9031 ± 0.0199 | 0.9511 | 0.8815 ± 0.0129 | 0.9415 |
+| 7  | 0.8896 ± 0.0238 | 0.9449 | 0.8496 ± 0.0293 | 0.9269 |
+| 9  | 0.8757 ± 0.0307 | 0.9390 | 0.8351 ± 0.0301 | 0.9211 |
+| 11 | 0.8650 ± 0.0333 | 0.9344 | 0.8300 ± 0.0257 | 0.9190 |
+| 15 | 0.8343 ± 0.0333 | 0.9215 | 0.8072 ± 0.0376 | 0.9102 |
+| 21 | 0.8154 ± 0.0453 | 0.9148 | 0.7768 ± 0.0339 | 0.8989 |
+
+Lưu ý: số của Count không đổi so với cách làm cũ vì bộ từ vựng đầy đủ chỉ có
+4346 token (< `max_features=5000`) nên từ vựng mỗi fold gần như trùng nhau;
+TF-IDF thay đổi nhẹ vì trọng số IDF phụ thuộc tần suất tài liệu của từng fold.
 
 **Kết luận tuning:** Best K = **3** cho cả Count và TF-IDF. F1 giảm đơn điệu khi
 K tăng — với tập train tương đối nhỏ (2394 mẫu), K lớn làm "pha loãng" tín hiệu
@@ -67,8 +84,8 @@ của lớp Spam vào các láng giềng Ham đông hơn. Biểu đồ: `results
 
 | Model | Feature | Accuracy | Precision | Recall | F1 | Train time | Predict time | K |
 |---|---|---|---|---|---|---|---|---|
-| KNN | Count | 0.9397 | 0.8631 | 0.9177 | **0.8896** | ~0.9 ms | ~69 ms | 3 |
-| KNN | TF-IDF | 0.9296 | 0.8537 | 0.8861 | **0.8696** | ~0.8 ms | ~71 ms | 3 |
+| KNN | Count | 0.9397 | 0.8631 | 0.9177 | **0.8896** | ~2 ms | ~150 ms | 3 |
+| KNN | TF-IDF | 0.9296 | 0.8537 | 0.8861 | **0.8696** | ~3 ms | ~150 ms | 3 |
 
 Confusion matrix (Count, k=3): TP = 145, FP = 23, TN = 416, FN = 13.
 Confusion matrix (TF-IDF, k=3): TP = 140, FP = 24, TN = 415, FN = 18.
@@ -87,10 +104,10 @@ Confusion matrix (TF-IDF, k=3): TP = 140, FP = 24, TN = 415, FN = 18.
 
 ### Runtime
 
-- Training gần như tức thời (< 1 ms) vì KNN là lazy learner — chỉ lưu dữ liệu.
-- Prediction ~70 ms cho 597 mẫu (brute-force cosine, `n_jobs=-1`).
-  Đây là nhược điểm thực tế của KNN: chi phí dự đoán tăng tuyến tính theo kích
-  thước tập train, ngược với Naive Bayes dự đoán gần như tức thời.
+- Training gần như tức thời (vài ms) vì KNN là lazy learner — chỉ lưu dữ liệu.
+- Prediction ~150 ms cho 597 mẫu (brute-force cosine, `n_jobs=-1`; số đo dao động
+  theo máy). Đây là nhược điểm thực tế của KNN: chi phí dự đoán tăng tuyến tính
+  theo kích thước tập train, ngược với Naive Bayes dự đoán gần như tức thời.
 
 ## 7. Error analysis (chi tiết: `results/knn/error_analysis_knn.md`)
 
