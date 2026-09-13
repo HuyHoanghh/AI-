@@ -1,0 +1,19 @@
+{
+  "selected_nb_feature": "Count",
+  "selection_rule": "highest train-only 5-fold mean F1",
+  "cv_mean_f1": {
+    "Count": 0.823608022289898,
+    "TFIDF": 0.7800432757322515
+  },
+  "alpha": 1.0,
+  "random_state": 42,
+  "python": "3.12.10",
+  "sklearn": "1.9.1",
+  "timing": "seconds; model.fit and model.predict only; excludes vectorization and CV",
+  "sha256": {
+    "train.csv": "fcd3f0db919578a57df8e4c9d79df2d7af7f1dcc871944f485e7e3a990fc0c1b",
+    "test.csv": "ab3a09aa6da2fa5adaa5c74d3662bc1a4b1b6b9f08189c0c8951bce402246760"
+  },
+  "cleaned_train_test_overlap": 31,
+  "dataset_source": "https://github.com/trannguyenthaituan251209/vietnamese_sms_dataset"
+}
