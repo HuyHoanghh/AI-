@@ -10,8 +10,8 @@ train  2394                0              0         303 1754   640
 
 ```text
      model feature  accuracy  precision   recall       f1  training_time  prediction_time
-NaiveBayes   Count  0.854271   0.691892 0.810127 0.746356       0.003897         0.000508
-NaiveBayes   TFIDF  0.874372   0.816794 0.677215 0.740484       0.003692         0.000516
+NaiveBayes   Count  0.854271   0.691892 0.810127 0.746356       0.002731         0.000290
+NaiveBayes   TFIDF  0.874372   0.816794 0.677215 0.740484       0.002561         0.000346
 ```
 
 Cấu hình NB chọn bằng CV trên train: **Count**. Đây chưa phải mô hình tốt nhất toàn dự án; cần kết quả KNN.

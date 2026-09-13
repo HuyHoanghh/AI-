@@ -30,3 +30,4 @@ results/**/*.csv
 # KNN outputs are required deliverables — keep them on GitHub
 !results/knn/*.csv
 !results/knn/*.png
+!results/final/*.csv

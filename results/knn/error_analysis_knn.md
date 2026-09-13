@@ -14,7 +14,7 @@ Nguồn lỗi được trích từ `test.csv` (597 mẫu). Mỗi cấu hình li�
 - Mung sinh nhat 15 tuoi Lotte Cinema tang ban 2 code xem phim [MONEY] chi voi [MONEY].Dung tai rap tu 10-13/4,17-20/4,24-27/4. Code: 1602300002820093 va 1602300003125533.
 - Ahamove tang rieng ban ma HIAHA tiet kiem ngay [MONEY] cho 2 don hang dau tien, dat don ngay tai https://ahamove.onelink.me/fmLb/5huavlai
 - The Manson thong bao, don hang: 221007R4FP4BRJ da duoc kich hoat bao hanh dien tu. Chuc quy khach co giay phut trai nghiem that tot san pham. Chi tiet lien he: https://themanson.vn/
-- Tôi đã nhận được đơn hàng spxvn[NUMBER]a Vào lúc 13h10 ngày 6 thang 10 . Đồng ý gở khieu nai
+- Tôi đã nhận được đơn hàng spxvn[NUMBER]a  Vào lúc 13h10 ngày 6 thang 10 . Đồng ý gở khieu nai
 
 ### False Negatives (Spam → đoán Ham)
 
@@ -31,10 +31,10 @@ Nguồn lỗi được trích từ `test.csv` (597 mẫu). Mỗi cấu hình li�
 
 ### False Positives (Ham → đoán Spam)
 
-- đơn 51/9 đường 475 a giao giùm e [TIME] đc kh a Có đon od em bỏ vô nhà có j lây giúp em nha a tài dạ oke e cảm ơn a
+- đơn 51/9 đường 475 a giao giùm e [TIME] đc kh a  Có đon od em bỏ vô nhà có j lây giúp em nha a tài  dạ oke e cảm ơn a
 - (TB) VNPT VinaPhone tran trong thong bao chuong trinh lap cap quang Wifi mien phi hoa mang tai TP.HCM. Chi tiet xin vui long LH:[NUMBER]
 - Vui long nhap mat khau [NUMBER] de dang nhap. Tran trong!
-- Tầm [TIME] anh giao lại giùm em được không anh h nhà em khôg có ng nhận anh ơi Ok. Có người nhà a hẹn [TIME] ạ
+- Tầm [TIME] anh giao lại giùm em được không anh h nhà em khôg có ng nhận anh ơi  Ok. Có người nhà a hẹn [TIME] ạ
 - Em ơi, sáng giờ gọi e 2 lần để giao hàng r. C bên Dr Mai trị mụn
 
 ### False Negatives (Spam → đoán Ham)

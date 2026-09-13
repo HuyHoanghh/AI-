@@ -156,7 +156,7 @@ def write_error_analysis_md(error_frames, metrics_summary, out_path: Path) -> No
         if fp.empty:
             lines.append("_Không có FP._\n")
         for _, row in fp.iterrows():
-            text = row["message"].replace("\n", " ")
+            text = row["message"].replace("\r", " ").replace("\n", " ")
             text = (text[:200] + "…") if len(text) > 200 else text
             lines.append(f"- {text}")
         lines += ["", "### False Negatives (Spam → đoán Ham)", ""]
@@ -164,7 +164,7 @@ def write_error_analysis_md(error_frames, metrics_summary, out_path: Path) -> No
         if fn.empty:
             lines.append("_Không có FN._\n")
         for _, row in fn.iterrows():
-            text = row["message"].replace("\n", " ")
+            text = row["message"].replace("\r", " ").replace("\n", " ")
             text = (text[:200] + "…") if len(text) > 200 else text
             lines.append(f"- {text}")
         lines.append("")
