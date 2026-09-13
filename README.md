@@ -81,6 +81,29 @@ python scripts/run_knn.py
 python scripts/compare_models.py
 ```
 
+## Demo phân loại SMS
+
+Sau khi cài `requirements.txt` và tải dataset, chạy từ thư mục dự án:
+
+```bash
+python scripts/export_demo_model.py
+python -m streamlit run app/app.py
+```
+
+Mở http://localhost:8501, nhập SMS và bấm **Phân loại**. Trên Windows có thể
+chạy `./run_demo.ps1`; script chọn Python trong workspace nếu có.
+
+Sau khi phân loại, demo hiển thị dự đoán của bốn cấu hình và ba láng giềng
+gần nhất của từng cấu hình KNN. Nhãn và nội dung láng giềng lấy từ train
+theo đúng thứ tự fit, được lưu cùng model trong `demo_comparison.joblib`.
+Khoảng cách cosine không phải xác suất hay độ tin cậy của dự đoán.
+
+Demo dùng KNN + Count, K = 3 đã chọn bằng CV trên train. Script xuất chỉ đọc
+train, lưu `best_model.joblib`, `best_vectorizer.joblib` và metadata trong
+`saved_models/`. Các file model được tạo tại máy, không đưa vào Git.
+Chuỗi rỗng, chỉ dấu câu hoặc không có token trong từ vựng sẽ được yêu cầu nhập lại.
+Không diễn giải kết quả là xác minh người gửi hoặc độ an toàn của liên kết.
+
 ## Git workflow
 
 ```text
