@@ -27,3 +27,6 @@ results/**/*.csv
 # Member 1 report artifacts are versioned for review
 !results/naive_bayes/*.csv
 !results/naive_bayes/*.png
+# KNN outputs are required deliverables — keep them on GitHub
+!results/knn/*.csv
+!results/knn/*.png
